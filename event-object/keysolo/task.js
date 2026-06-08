@@ -16,6 +16,23 @@ class Game {
     this.lossElement.textContent = 0;
   }
 
+  startTimer() {
+    const timerEl = document.querySelector('.status__timer');
+    let seconds = document.querySelectorAll('.symbol').length;
+
+    clearInterval(this.timerId);
+    timerEl.textContent = seconds;
+
+    this.timerId = setInterval(() => {
+      timerEl.textContent--;
+
+      if (timerEl.textContent <= 0) {
+        clearInterval(this.timerId);
+        this.fail();
+      }
+    }, 1000);
+  }
+
   registerEvents() {
     /*
       TODO:
@@ -25,10 +42,22 @@ class Game {
       При неправильном вводе символа - this.fail();
       DOM-элемент текущего символа находится в свойстве this.currentSymbol.
      */
+
+    window.addEventListener('keydown', (e) => {
+      const currentSymbol = this.currentSymbol.textContent.toUpperCase();
+
+      if (e.code === `Key${currentSymbol}`) {
+        this.success();
+        return;
+      }
+
+      this.fail();
+    });
   }
 
   success() {
-    if(this.currentSymbol.classList.contains("symbol_current")) this.currentSymbol.classList.remove("symbol_current");
+    if (this.currentSymbol.classList.contains('symbol_current'))
+      this.currentSymbol.classList.remove('symbol_current');
     this.currentSymbol.classList.add('symbol_correct');
     this.currentSymbol = this.currentSymbol.nextElementSibling;
 
@@ -56,6 +85,7 @@ class Game {
     const word = this.getWord();
 
     this.renderWord(word);
+    this.startTimer();
   }
 
   getWord() {
@@ -70,7 +100,7 @@ class Game {
         'popcorn',
         'cinema',
         'love',
-        'javascript'
+        'javascript',
       ],
       index = Math.floor(Math.random() * words.length);
 
@@ -81,7 +111,7 @@ class Game {
     const html = [...word]
       .map(
         (s, i) =>
-          `<span class="symbol ${i === 0 ? 'symbol_current': ''}">${s}</span>`
+          `<span class="symbol ${i === 0 ? 'symbol_current' : ''}">${s}</span>`,
       )
       .join('');
     this.wordElement.innerHTML = html;
@@ -90,5 +120,4 @@ class Game {
   }
 }
 
-new Game(document.getElementById('game'))
-
+new Game(document.getElementById('game'));

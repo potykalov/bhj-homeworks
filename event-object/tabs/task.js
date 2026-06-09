@@ -1,19 +1,19 @@
-const tabs = document.querySelectorAll('.tabs');
+const containers = document.querySelectorAll('.tabs');
 
-tabs.forEach((tab) => {
-  const tabArray = tab.querySelectorAll('.tab');
-  const contents = tab.querySelectorAll('.tab__content');
+containers.forEach((container) => {
+  const tabs = container.querySelectorAll('.tab');
+  const contents = container.querySelectorAll('.tab__content');
 
-  tabArray.forEach((tab, index) => {
+  tabs.forEach((tab, index) => {
     tab.addEventListener('click', function () {
-      tabArray.forEach((tab) => (tab.className = 'tab'));
-      tab.className = 'tab tab_active';
+      tabs.forEach((tab) => tab.classList.remove('tab_active'));
+      tab.classList.add('tab_active');
 
       contents.forEach((content) => {
-        content.className = 'tab__content';
+        content.classList.remove('tab__content_active');
       });
 
-      contents[index].className = 'tab__content tab__content_active';
+      contents[index].classList.add('tab__content_active');
     });
   });
 });

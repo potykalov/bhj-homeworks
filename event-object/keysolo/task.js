@@ -44,9 +44,9 @@ class Game {
      */
 
     window.addEventListener('keydown', (e) => {
-      const currentSymbol = this.currentSymbol.textContent.toUpperCase();
+      const currentSymbol = this.currentSymbol.textContent.toLowerCase();
 
-      if (e.code === `Key${currentSymbol}`) {
+      if (e.key === currentSymbol) {
         this.success();
         return;
       }
